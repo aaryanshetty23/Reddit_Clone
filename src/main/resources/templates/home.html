@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Subreddits</h1>
+    <ul>
+        <li th:each="subreddit : ${subreddits}">
+            <a th:href="@{/subreddit/{id}(id=${subreddit.id})}" th:text="${subreddit.name}"></a>
+            - <span th:text="${subreddit.description}"></span>
+        </li>
+    </ul>
+
+    <h2>Create a new subreddit</h2>
+    <form action="/subreddit/create" method="post">
+        <div>
+            <label>Name:</label>
+            <input type="text" name="name" required>
+        </div>
+        <div>
+            <label>Description:</label>
+            <textarea name="description"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="Create Subreddit">
+        </div>
+    </form>
+    <p style="color:red;" th:text="${error}"></p>
+    <p style="color:green;" th:text="${success}"></p>
+</body>
+</html>
