@@ -103,5 +103,10 @@ public class UserService {
         }
         return null; // No matching user found
     }
+
+    public User getUserById(Long userId) {
+        // Fetch the user by ID from the repository
+        return userRepository.findById(userId).orElse(null);
+    }
     
 }

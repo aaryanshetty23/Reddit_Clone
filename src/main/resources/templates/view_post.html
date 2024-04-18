@@ -1,43 +1,177 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>View Post</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <title th:text="${post.title}">View Post</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ff4500;
+        }
+
+        .post-header {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .post-details {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .post-content {
+            margin-top: 10px;
+        }
+
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        .comment-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f4f4f4;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #0079d3;
+        }
+
+        .comment-content {
+            margin: 5px 0;
+        }
+
+        .add-comment-form {
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #0079d3;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005f9e;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #0079d3;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <h1 th:text="${post.title}">Post Title</h1>
-        
-        <div>
-            <p th:text="${post.content}">Post content goes here...</p>
-        </div>
-        
-        <div>
-            <p><strong>Posted by:</strong> <span th:text="${post.author.username}">Username</span></p>
-            <p><strong>Posted on:</strong> <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Date and Time</span></p>
-        </div>
-
-        <div>
-            <h2>Comments:</h2>
-            <div th:each="comment : ${comments}">
-                <p><strong th:text="${comment.author.username}">Author</strong>:</p>
-                <p th:text="${comment.content}">Comment content...</p>
-                <p><strong>Posted on:</strong> <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">Date and Time</span></p>
-                <hr>
+        <div class="post-header">
+            <h1 th:text="${post.title}">Post Title</h1>
+            <div class="post-details">
+                <span>Posted by <strong th:text="${post.author.username}">Username</strong></span> | 
+                <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Date and Time</span>
             </div>
         </div>
 
-        <div>
-            <h3>Add a Comment:</h3>
-            <form action="/post/${post.id}/comments" method="post">
-                <textarea name="content" placeholder="Your comment..." required></textarea><br>
+        <div class="post-content" th:text="${post.content}">
+            Post content goes here...
+        </div>
+
+        <div class="add-comment-form">
+            <h3>Add a Comment</h3>
+            <form onsubmit="submitCommentForm(event)" method="POST">
+                <textarea name="content" placeholder="Food for thought" required></textarea>
                 <button type="submit">Submit</button>
             </form>
         </div>
 
-        <div>
-            <a th:href="@{/subreddit/{id}(id=${post.subreddit.id})}">Back to Subreddit</a>
+        <script>
+            function submitCommentForm(event) {
+                event.preventDefault();
+
+                const token = sessionStorage.getItem('authToken');
+                console.log(token);
+
+                //form data
+                const form = event.target;
+                const formData = new FormData(form);
+
+                const pathParts = window.location.pathname.split('/');
+                const postId = pathParts[pathParts.indexOf('post') + 1];
+
+                fetch(`/post/${postId}/comment`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        response.text().then(errorText => {
+                            console.error('Error:', errorText);
+                            alert('Unable to submit comment. Please try again.');
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Unable to submit comment. Please try again.');
+                });
+            }
+        </script>
+
+        <div class="comments-section">
+            <h2>Comments</h2>
+            <div th:each="comment : ${comments}" class="comment-item">
+                <p class="comment-author" th:text="${comment.author.username}">Author</p>
+                <p class="comment-content" th:text="${comment.content}">Comment content...</p>
+                <p th:text="${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm')}">Date and Time</p>
+            </div>
         </div>
+
+        <a th:href="@{/subreddit/{id}(id=${post.subreddit.id})}" class="back-link">Back to Subreddit</a>
     </div>
 </body>
+
 </html>

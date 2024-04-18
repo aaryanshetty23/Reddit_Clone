@@ -98,9 +98,7 @@
                     if (response.ok) {
                         window.location.href = '/';
                     } else {
-                        // Handle error
                         response.text().then(errorText => {
-                            // Display error message
                             const errorElement = document.querySelector('p[th:text="${error}"]');
                             errorElement.textContent = errorText;
                         });

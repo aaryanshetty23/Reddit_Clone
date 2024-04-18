@@ -33,7 +33,7 @@ public class CommentService {
         Comment existingComment = commentRepository.findById(id).orElse(null);
         if (existingComment != null) {
             // Update the comment properties
-            existingComment.setText(updatedComment.getText());
+            existingComment.setContent(updatedComment.getContent());
 
             // Save the updated comment
             return commentRepository.save(existingComment);

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.time.LocalDateTime;
 import com.example.leddit.Model.Post;
 import com.example.leddit.Model.Comment;
 import com.example.leddit.Model.Subreddit;
@@ -33,18 +34,22 @@ public class PostController {
         this.userService = userService;
     }
 
-    @GetMapping("/post/{id}")
-    public String viewPost(@PathVariable Long id, Model model) {
+    @GetMapping("/subreddit/{id1}/post/{id2}")
+    public String viewPost(@PathVariable Long id1, @PathVariable Long id2, Model model) {
+        Subreddit subreddit = subredditService.getSubredditById(id1);
+        model.addAttribute("subreddit", subreddit);
+        
         // Retrieve the post by ID
-        Post post = postService.getPostById(id);
+        Post post = postService.getPostById(id2);
         model.addAttribute("post", post);
         
         // Retrieve comments for the post
-        List<Comment> comments = commentService.getCommentsByPostId(id);
+        List<Comment> comments = commentService.getCommentsByPostId(id2);
         model.addAttribute("comments", comments);
         
         return "view_post";
     }
+
 
     @GetMapping("/subreddit/{id}/post/create")
     public String showCreatePostForm(@PathVariable Long id, Model model) {
@@ -82,6 +87,39 @@ public class PostController {
             return "redirect:/subreddit/" + subredditId;
         }
         
+    }
+
+    @PostMapping("/post/{postId}/comment")
+    public String createComment(@PathVariable("postId") Long postId,
+                                @RequestParam("content") String content,
+                                @RequestHeader("Authorization") String authorizationHeader) {
+        // Retrieve the token from the request header
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        System.out.println(authorizationHeader);
+
+        // Validate the token and retrieve the user ID
+        Long userId = userService.getUserIdFromToken(token);
+
+        System.out.println(token);
+        
+        // If the token is invalid, then it's anon
+        if (userId == null) {
+            userId = 69L;
+        }
+
+        // Create the comment
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setPost(postService.getPostById(postId));
+        comment.setAuthor(userService.getUserById(userId));
+        comment.setCreatedDate(LocalDateTime.now());
+
+        // Save the new comment to the database
+        commentService.createComment(comment);
+
+        // Redirect back to the post page
+        return "redirect:/subreddit/" + comment.getPost().getSubreddit().getId() + "/post/" + postId;
     }
 
 }

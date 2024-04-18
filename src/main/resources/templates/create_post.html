@@ -41,19 +41,17 @@
     </style>
     <script>
         function submitForm(event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault();
 
-            // Retrieve the token from session storage
             const token = sessionStorage.getItem('authToken');
 
-            // Get the form data
+            //form data
             const formElement = document.querySelector('form');
             const formData = new FormData(formElement);
 
             const pathParts = window.location.pathname.split('/');
             const subredditId = pathParts[pathParts.indexOf('subreddit') + 1];
 
-            // Send a POST request to create a new post
             fetch(`/subreddit/${subredditId}/post`, {
                 method: 'POST',
                 body: formData,
@@ -63,10 +61,8 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Redirect to the subreddit page if the request was successful
                     window.location.href = `/subreddit/${subredditId}`;
                 } else {
-                    // Handle error: display error message in the HTML page
                     response.text().then(errorText => {
                         console.log("Error: Things have gone wrong")
                     });

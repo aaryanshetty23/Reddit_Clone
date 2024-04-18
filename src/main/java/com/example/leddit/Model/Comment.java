@@ -11,8 +11,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String text;
+    @Column(name = "content", nullable = false)
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
@@ -22,8 +22,8 @@ public class Comment {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @Column(nullable = false)
-    private LocalDateTime timestamp;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
     public Comment() {
         // Default constructor
@@ -38,12 +38,12 @@ public class Comment {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContent(String text) {
+        this.content = text;
     }
 
     public Post getPost() {
@@ -62,11 +62,11 @@ public class Comment {
         this.author = author;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 }
