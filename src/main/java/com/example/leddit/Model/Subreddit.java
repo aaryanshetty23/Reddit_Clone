@@ -24,7 +24,6 @@ public class Subreddit {
     @JoinColumn(name = "creator_id", nullable = false)
     private User creator;
 
-    // Constructors, getters, and setters
 
     public Subreddit() {
         // Default constructor
@@ -34,7 +33,7 @@ public class Subreddit {
         this.name = name;
         this.description = description;
         this.creator = creator;
-        this.createdDate = LocalDateTime.now();  // Automatically set the current date and time
+        this.createdDate = LocalDateTime.now();
     }
 
     public Long getId() {

@@ -23,7 +23,6 @@ public class User {
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    // Getters and Setters
 
     public Long getId() {
         return id;

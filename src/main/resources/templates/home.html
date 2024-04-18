@@ -2,31 +2,111 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .container_home {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .btn-create {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-create:hover {
+            background-color: #e03d00;
+        }
+
+        .main {
+            padding: 20px 0;
+        }
+
+        .subreddit-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .subreddit-item {
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subreddit-info {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .subreddit-link {
+            font-weight: bold;
+            color: #ff4500;
+            text-decoration: none;
+        }
+
+        .subreddit-link:hover {
+            text-decoration: underline;
+            color: #e03d00;
+        }
+
+        .subreddit-description {
+            color: #777;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Subreddits</h1>
-    <ul>
-        <li th:each="subreddit : ${subreddits}">
-            <a th:href="@{/subreddit/{id}(id=${subreddit.id})}" th:text="${subreddit.name}"></a>
-            - <span th:text="${subreddit.description}"></span>
-        </li>
-    </ul>
-
-    <h2>Create a new subreddit</h2>
-    <form action="/subreddit/create" method="post">
-        <div>
-            <label>Name:</label>
-            <input type="text" name="name" required>
+    <header class="navbar">
+        <div class="container_home">
+            <h1>Home</h1>
+            <a href="/subreddit/new" class="btn-create">Create Subreddit</a>
         </div>
-        <div>
-            <label>Description:</label>
-            <textarea name="description"></textarea>
-        </div>
-        <div>
-            <input type="submit" value="Create Subreddit">
-        </div>
-    </form>
-    <p style="color:red;" th:text="${error}"></p>
-    <p style="color:green;" th:text="${success}"></p>
+    </header>
+    
+    <main class="container">
+        <ul class="subreddit-list">
+            <li th:each="subreddit : ${subreddits}" class="subreddit-item">
+                <div class="subreddit-info">
+                    <a th:href="@{/subreddit/{id}(id=${subreddit.id})}" th:text="${subreddit.name}" class="subreddit-link"></a>
+                    <p th:text="${subreddit.description}" class="subreddit-description"></p>
+                </div>
+            </li>
+        </ul>
+    </main>
 </body>
 </html>

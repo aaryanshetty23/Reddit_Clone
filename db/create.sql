@@ -64,3 +64,12 @@ CREATE TABLE UserTokens (
     expires_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
+
+INSERT INTO Users (id, username, password, email, created_date)
+VALUES (
+    69,
+    'Anonymous',
+    '1234567890',
+    'anon@place.holder',
+    '2024-04-04 00:00:00'
+);

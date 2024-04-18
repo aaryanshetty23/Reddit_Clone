@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Post</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${post.title}">Post Title</h1>
+        
+        <div>
+            <p th:text="${post.content}">Post content goes here...</p>
+        </div>
+        
+        <div>
+            <p><strong>Posted by:</strong> <span th:text="${post.author.username}">Username</span></p>
+            <p><strong>Posted on:</strong> <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Date and Time</span></p>
+        </div>
+
+        <div>
+            <h2>Comments:</h2>
+            <div th:each="comment : ${comments}">
+                <p><strong th:text="${comment.author.username}">Author</strong>:</p>
+                <p th:text="${comment.content}">Comment content...</p>
+                <p><strong>Posted on:</strong> <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">Date and Time</span></p>
+                <hr>
+            </div>
+        </div>
+
+        <div>
+            <h3>Add a Comment:</h3>
+            <form action="/post/${post.id}/comments" method="post">
+                <textarea name="content" placeholder="Your comment..." required></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div>
+            <a th:href="@{/subreddit/{id}(id=${post.subreddit.id})}">Back to Subreddit</a>
+        </div>
+    </div>
+</body>
+</html>

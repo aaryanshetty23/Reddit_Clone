@@ -55,6 +55,18 @@ public class UserService {
         return false;
     }
 
+    public Long getUserIdFromToken(String token) {
+        Optional<UserToken> userToken = userTokenRepository.findByToken(token);
+        if (userToken.isPresent()) {
+            // Check if token is expired (optional)
+            UserToken tokenRecord = userToken.get();
+            if (tokenRecord.getExpiresAt().after(new Date())) {
+                return tokenRecord.getUserId();
+            }
+        }
+        return 69L;
+    }
+
     public String generateToken() {
         return UUID.randomUUID().toString();
     }
@@ -72,12 +84,24 @@ public class UserService {
         userToken.setExpiresAt(expirationDate);
         
         userTokenRepository.save(userToken);
-    }
-    
-    
+    }    
 
     public void revokeToken(String token) {
         userTokenRepository.deleteByToken(token);
-    }    
+    }
+
+    public User getUserFromToken(String token) {
+        Optional<UserToken> userTokenOptional = userTokenRepository.findByToken(token);
+        
+        // If a matching token is found, get the user ID from the token and return the user
+        if (userTokenOptional.isPresent()) {
+            Long userId = userTokenOptional.get().getUserId();
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                return userOptional.get();
+            }
+        }
+        return null; // No matching user found
+    }
     
 }

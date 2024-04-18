@@ -1,24 +1,146 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Login</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ff4500;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #ff4500;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e03d00;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #e03d00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #e03d00;
+        }
+
+        p[id="error"] {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Send AJAX request
+            fetch('/login', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Successful login, retrieve the token from the response
+                    response.text().then(token => {
+                        // Store the token in local storage
+                        sessionStorage.setItem('authToken', token);
+                        // Redirect to the home page
+                        window.location.href = '/';
+                    });
+                } else {
+                    // Handle error response
+                    response.text().then(errorMessage => {
+                        // Display error message
+                        const errorElement = document.getElementById('error');
+                        errorElement.textContent = errorMessage;
+                    });
+                }
+            })
+            .catch(error => {
+                // Handle network errors
+                console.error('Error:', error);
+                const errorElement = document.getElementById('error');
+                errorElement.textContent = 'Network error. Please try again later.';
+            });
+        }
+    </script>
 </head>
+
 <body>
-    <h1>Login</h1>
-    <form action="/login" method="post">
-        <div>
-            <label>Username:</label>
-            <input type="text" name="username" required>
-        </div>
-        <div>
-            <label>Password:</label>
-            <input type="password" name="password" required>
-        </div>
-        <div>
-            <input type="submit" value="Login">
-        </div>
-    </form>
-    <p>Don't have an account? <a href="/register">Register</a></p>
-    <p style="color:red;" th:text="${error}"></p>
+    <div class="container">
+        <h1>Login</h1>
+        <form action="/login" method="post" onsubmit="handleLogin(event)">
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div>
+                <input type="submit" value="Login">
+            </div>
+        </form>
+        <p>Don't have an account? <a href="/register">Register</a></p>
+        <p id="error"></p>
+    </div>
 </body>
+
 </html>

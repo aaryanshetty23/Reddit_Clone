@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${subreddit.name}">Subreddit</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ff4500;
+        }
+
+        .description {
+            margin-top: 10px;
+            color: #777;
+        }
+
+        .posts {
+            margin-top: 20px;
+        }
+
+        .post-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f4f4f4;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-title {
+            font-weight: bold;
+            color: #0079d3;
+            text-decoration: none;
+        }
+
+        .post-title:hover {
+            text-decoration: underline;
+        }
+        
+        .create-post-button {
+            padding: 10px 20px;
+            background-color: #0079d3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            float: right;
+        }
+
+
+        .create-post-button:hover {
+            background-color: #005f9e;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 th:text="${subreddit.name}">Subreddit Name</h1>
+        <p class="description" th:text="${subreddit.description}">Subreddit Description</p>
+
+        <a th:href="@{/subreddit/{id}/post/create(id=${subreddit.id})}" class="create-post-button">Create New Post</a>
+
+        <div class="posts">
+            <h2>Posts</h2>
+            <div th:each="post : ${posts}" class="post-item">
+                <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}" class="post-title"></a>
+                <p th:text="${post.content}"></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

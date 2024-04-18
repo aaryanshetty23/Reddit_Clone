@@ -20,7 +20,6 @@ public class UserToken {
     @Column(nullable = false)
     private Date expiresAt;
 
-    // Getters and setters
 
     public Long getId() {
         return id;
