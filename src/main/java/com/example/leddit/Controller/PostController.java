@@ -16,6 +16,7 @@ import com.example.leddit.Service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.example.leddit.Service.CommentService;
+import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,10 @@ public class PostController {
         // Retrieve the post by ID
         Post post = postService.getPostById(id2);
         model.addAttribute("post", post);
+
+        // Encode imageData to Base64
+        String imageDataAsBase64 = post.getImageDataAsBase64();
+        model.addAttribute("imageDataAsBase64", imageDataAsBase64);
         
         // Retrieve comments for the post
         List<Comment> comments = commentService.getCommentsByPostId(id2);
@@ -66,7 +71,7 @@ public class PostController {
 
     @PostMapping("/subreddit/{subredditId}/post")
     public String createPost(@PathVariable("subredditId") Long subredditId, @RequestHeader("Authorization") String authorizationHeader, 
-    @RequestParam String title, @RequestParam String content, HttpServletRequest request) {
+    @RequestParam String title, @RequestParam String content, @RequestParam("image") MultipartFile image, HttpServletRequest request) {
         // Retrieve the token from the request header
         String token = authorizationHeader.replace("Bearer ", "");
 
@@ -79,11 +84,11 @@ public class PostController {
         
         // userId won't be null since getUserIdFromToken will return 69 for anons
         if (userId != null) {
-            postService.createPost(title, content, subredditId, userId);
+            postService.createPost(title, content, subredditId, userId, image);
             return "redirect:/subreddit/" + subredditId;
         } else {
             //this part's never used
-            postService.createPost(title, content, subredditId, 69L);
+            postService.createPost(title, content, subredditId, 69L, image);
             return "redirect:/subreddit/" + subredditId;
         }
         

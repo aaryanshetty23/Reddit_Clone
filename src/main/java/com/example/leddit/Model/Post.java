@@ -3,6 +3,8 @@ package com.example.leddit.Model;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
+import java.util.Base64;
+
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -27,6 +29,9 @@ public class Post {
 
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
+
+    @Column(name = "image_data")
+    private byte[] imageData;
 
 
     public Post() {
@@ -87,5 +92,20 @@ public class Post {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdDate = createdAt;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public String getImageDataAsBase64() {
+        if (imageData != null) {
+            return Base64.getEncoder().encodeToString(imageData);
+        }
+        return null;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 }

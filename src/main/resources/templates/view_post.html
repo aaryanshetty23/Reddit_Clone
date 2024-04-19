@@ -98,6 +98,13 @@
         .back-link:hover {
             text-decoration: underline;
         }
+
+        .post-image {
+            display: block;
+            margin: 10px auto;
+            height: 300px;
+            object-fit: contain;
+        }
     </style>
 </head>
 
@@ -114,6 +121,8 @@
         <div class="post-content" th:text="${post.content}">
             Post content goes here...
         </div>
+
+        <img th:if="${imageDataAsBase64 != null}" th:src="'data:image/png;base64,' + ${imageDataAsBase64}" alt="Post Image" class="post-image">
 
         <div class="add-comment-form">
             <h3>Add a Comment</h3>

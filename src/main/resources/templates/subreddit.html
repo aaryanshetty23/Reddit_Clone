@@ -68,6 +68,14 @@
         .create-post-button:hover {
             background-color: #005f9e;
         }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            height: 300px;
+            object-fit: contain;
+        }
+
     </style>
 </head>
 
@@ -82,7 +90,9 @@
             <h2>Posts</h2>
             <div th:each="post : ${posts}" class="post-item">
                 <a th:href="@{/subreddit/{id1}/post/{id2}(id1=${subreddit.id},id2=${post.id})}" th:text="${post.title}" class="post-title"></a>
+                
                 <p th:text="${post.content}"></p>
+                <img th:if="${post.imageDataAsBase64}" th:src="'data:image/jpeg;base64,' + ${post.imageDataAsBase64}" alt="Post Image">
             </div>
         </div>
     </div>

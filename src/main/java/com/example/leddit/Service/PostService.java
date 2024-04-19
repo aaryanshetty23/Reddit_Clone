@@ -11,7 +11,9 @@ import com.example.leddit.Model.Subreddit;
 import com.example.leddit.Repository.SubredditRepository;
 import com.example.leddit.Repository.UserRepository;
 import java.time.LocalDateTime;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 
 @Service
 public class PostService {
@@ -36,7 +38,7 @@ public class PostService {
         return optionalPost.orElse(null);
     }
 
-    public void createPost(String title, String content, Long subredditId, Long userId) {
+    public void createPost(String title, String content, Long subredditId, Long userId, MultipartFile image) {
         // Retrieve the subreddit by ID
         Subreddit subreddit = subredditRepository.findById(subredditId).orElseThrow(() ->
                 new IllegalArgumentException("Invalid subreddit ID: " + subredditId));
@@ -53,6 +55,15 @@ public class PostService {
         newPost.setSubreddit(subreddit);
         newPost.setCreatedAt(LocalDateTime.now());
 
+        if (!image.isEmpty()) {
+            try {
+                byte[] imageData = image.getBytes();
+                newPost.setImageData(imageData);
+            } catch (IOException e) {
+                // Handle error
+                System.out.println("Error uploading image");
+            }
+        }
 
         // Save the new post to the repository
         postRepository.save(newPost);
