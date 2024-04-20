@@ -1,6 +1,7 @@
 package com.example.leddit.Repository;
 
 import com.example.leddit.Model.Post;
+import com.example.leddit.Model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +12,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findBySubredditId(Long subredditId);
     List<Post> findByAuthorId(Long authorId);
+    List<Post> findByAuthor(User author);
 
 }

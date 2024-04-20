@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="'User Page - ' + ${user.username}">User Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            color: #1a1a1b;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #0079d3;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+        }
+
+        .post-details {
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .comment-details {
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #0079d3;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .post-content {
+            margin-top: 10px;
+            color: #1a1a1b;
+        }
+
+        .comment-content {
+            margin-top: 10px;
+            color: #1a1a1b;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #0079d3;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .post-image {
+            max-width: 100%;
+            margin-top: 10px;
+            height: 300px;
+        }
+
+        .container_home {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container_home">
+            <h1><a href="/" class="home-link" style="color:black;">Leddit</a></h1>
+            
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <h1><span th:text="${user.username}">Username</span></h1>
+
+        <center><h2>Posts</h2></center>
+        <ul>
+            <li th:each="post : ${userPosts}">
+                <div>
+                    <a th:href="@{/subreddit/{subId}/post/{postId}(subId=${post.subreddit.id},postId=${post.id})}" th:text="${post.title}">Post Title</a>
+                </div>
+                <div class="post-details">
+                    <p>Subreddit: <span th:text="${post.subreddit.name}">Subreddit Name</span></p>
+                    <p>Posted on: <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span></p>
+                </div>
+                <center><img th:if="${post.imageDataAsBase64 != null}" th:src="'data:image/png;base64,' + ${post.imageDataAsBase64}" alt="Post Image" class="post-image"></center>
+            </li>
+        </ul>
+
+        <center><h2>Comments</h2></center>
+        <ul>
+            <li th:each="comment : ${userComments}">
+                <div>
+                    <p th:text="${comment.content}">Comment Content</p>
+                </div>
+                <div class="comment-details">
+                    <p>Posted on: <span th:text="${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm')}">Date</span></p>
+                    <p>Under post: <a th:href="@{/subreddit/{subId}/post/{postId}(subId=${comment.post.subreddit.id},postId=${comment.post.id})}" th:text="${comment.post.title}">Post Title</a></p>
+                    <p>In subreddit: <span th:text="${comment.post.subreddit.name}">Subreddit Name</span></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

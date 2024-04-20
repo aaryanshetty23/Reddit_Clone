@@ -59,9 +59,37 @@
         p {
             margin-top: 10px;
         }
+
+        .container_home {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
+    <header class="navbar">
+        <div class="container_home">
+            <h1><a href="/" class="home-link" style="color:black;">Leddit</a></h1>
+            
+        </div>
+    </header>
+
     <div class="container">
         <h2>Create a New Subreddit</h2>
         <form id="createSubredditForm">
