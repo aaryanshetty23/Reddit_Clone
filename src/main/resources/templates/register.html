@@ -1,3 +1,4 @@
+<!---
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -133,4 +134,144 @@
     </div>
 </body>
 
+</html>
+--->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dae0e6;
+            color: #1c1c1c;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ff4500;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #edeff1;
+            background-color: #f6f7f8;
+            color: #1c1c1c;
+        }
+
+        input[type="submit"] {
+            background-color: #ff4500;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ff5a1f;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #ff4500;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #ff5a1f;
+        }
+
+        p[style="color:red;"], p[style="color:green;"] {
+            font-weight: bold;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #edeff1;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar a {
+            color: #1c1c1c;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <h1><a href="/">Leddit</a></h1>
+    </header>
+
+    <div class="container">
+        <h1>Register</h1>
+        <form action="/register" method="post">
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div>
+                <input type="submit" value="Register">
+            </div>
+        </form>
+        <p>Already have an account? <a href="/login">Login</a></p>
+        <p style="color:red;" th:text="${error}"></p>
+        <p style="color:green;" th:text="${success}"></p>
+    </div>
+</body>
 </html>

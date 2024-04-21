@@ -1,3 +1,4 @@
+<!---
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -125,4 +126,137 @@
     </div>
 </body>
 
+</html>
+--->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${subreddit.name}">Subreddit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dae0e6;
+            color: #1c1c1c;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ff4500;
+            margin-top: 0;
+        }
+
+        .description {
+            margin-top: 10px;
+            color: #1c1c1c;
+            line-height: 1.5;
+        }
+
+        .posts {
+            margin-top: 20px;
+        }
+
+        .post-item {
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f6f7f8;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .post-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-title {
+            font-weight: bold;
+            color: #ff4500;
+            text-decoration: none;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .post-title:hover {
+            text-decoration: underline;
+            color: #ff5a1f;
+        }
+
+        .create-post-button {
+            padding: 10px 20px;
+            background-color: #ff4500;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            float: right;
+            transition: background-color 0.3s;
+        }
+
+        .create-post-button:hover {
+            background-color: #ff5a1f;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #edeff1;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar a {
+            color: #1c1c1c;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <h1><a href="/">Leddit</a></h1>
+    </header>
+
+    <div class="container">
+        <h1 th:text="${subreddit.name}">Subreddit Name</h1>
+        <p class="description" th:text="${subreddit.description}">Subreddit Description</p>
+        <a th:href="@{/subreddit/{id}/post/create(id=${subreddit.id})}" class="create-post-button">Create New Post</a>
+        <div class="posts">
+            <h2>Posts</h2>
+            <div th:each="post : ${posts}" class="post-item">
+                <a th:href="@{/subreddit/{id1}/post/{id2}(id1=${subreddit.id},id2=${post.id})}" th:text="${post.title}" class="post-title"></a>
+                <p th:text="${post.content}"></p>
+                <img th:if="${post.imageDataAsBase64}" th:src="'data:image/jpeg;base64,' + ${post.imageDataAsBase64}" alt="Post Image">
+            </div>
+        </div>
+    </div>
+</body>
 </html>

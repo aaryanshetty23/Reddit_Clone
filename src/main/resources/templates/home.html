@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -98,6 +99,127 @@
         </div>
     </header>
     
+    <main class="container">
+        <ul class="subreddit-list">
+            <li th:each="subreddit : ${subreddits}" class="subreddit-item">
+                <div class="subreddit-info">
+                    <a th:href="@{/subreddit/{id}(id=${subreddit.id})}" th:text="${subreddit.name}" class="subreddit-link"></a>
+                    <p th:text="${subreddit.description}" class="subreddit-description"></p>
+                </div>
+            </li>
+        </ul>
+    </main>
+</body>
+</html>
+--->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dae0e6;
+            color: #1c1c1c;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #edeff1;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar a {
+            color: #1c1c1c;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            color: #ff4500;
+        }
+
+        .btn-create {
+            background-color: #ff4500;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-create:hover {
+            background-color: #ff5a1f;
+        }
+
+        .subreddit-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .subreddit-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .subreddit-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .subreddit-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .subreddit-link {
+            font-weight: bold;
+            color: #ff4500;
+            text-decoration: none;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .subreddit-link:hover {
+            text-decoration: underline;
+            color: #ff5a1f;
+        }
+
+        .subreddit-description {
+            color: #1c1c1c;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <h1><a href="/">Leddit</a></h1>
+        <a href="/subreddit/new" class="btn-create">Create Subreddit</a>
+    </header>
+
     <main class="container">
         <ul class="subreddit-list">
             <li th:each="subreddit : ${subreddits}" class="subreddit-item">
